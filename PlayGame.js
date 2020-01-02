@@ -33,6 +33,7 @@ let toExport = {
     playGame,
     playTurn,
     makeActualMove,
+    minimax,
 };
 
 module.exports = toExport;

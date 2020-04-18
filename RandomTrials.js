@@ -1,9 +1,8 @@
 const { makeAllBoards, getPossibleMoves, playUntilFinished, } = require('./BoardHelper');
 const { player, playTurn, makeMove, makeActualMove} = require('./PlayGame');
-const { lastSection, } = require('./Section');
 
-function playRandomTrialsComputerMove(board) {
-    if (!overallBoardIsFinished(board)) {
+function playRandomTrialsComputerMove(board, lastSection) {
+    if (!gameIsFinished(board)) {
         console.log('Computer is thinking...');
         let possibleMovesArr = getPossibleMoves(board, lastSection);
         let optimalMove;

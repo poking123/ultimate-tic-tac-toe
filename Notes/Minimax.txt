@@ -1,0 +1,3 @@
+Why does minimax return an array and not just the move?
+- we need minimax to return the evaluation (currBoardEvaluation), but if it just returns the evaluation, we lose the
+information on what move gave that evaluation. Returning an array lets us have [move, evaluation]

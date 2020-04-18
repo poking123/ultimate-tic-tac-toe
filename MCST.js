@@ -1,53 +1,44 @@
-const { playUntilFinished, makeMove, getPossibleMoves, makeAllBoards, overallBoardIsFinished, printBoard, makeOverallBoard } = require('./BoardHelper');
+const { playUntilFinished, makeMove, getPossibleMoves, makeAllBoards, gameIsFinished, printBoard, makeOverallBoard } = require('./BoardHelper');
 let { playTurn, makeActualMove} = require('./PlayGame');
 const { MCSTIterations } = require('./Constants');
-let values = require('./Values');
 const Node = require('./Node2');
 
-function playMCST(board) {
-    if (!overallBoardIsFinished(board)) {
+function playMCST(board, player, lastSection) {
+    if (!gameIsFinished(board)) {
         console.log('Computer is thinking...');
         let boardCopy = board.map(row => [...row]);
         let parent = null;
         let headNode = new Node(boardCopy, parent);
 
         for (let i = 0; i < MCSTIterations; i++) {
-            runMCST(headNode, values.player);
+            runMCST(headNode, player, lastSection);
         }
 
-        let optimalNode = MCSTOptimalNode(headNode);
+        let optimalNode = MCSTOptimalNode(headNode, player);
         // console.log('optimalNode is ', optimalNode);
         let optimalMove = optimalNode.getMove();
 
-        console.log('Computer\'s Move: ', optimalMove);
-        let newBoard = makeActualMove(optimalMove, board, values.player);
-        values.player = 3 - values.player;
-        playTurn(newBoard);
+        // console.log('Computer\'s Move: ', optimalMove);
+        // let newBoard = makeActualMove(optimalMove, board, player);
+        // values.player = 3 - values.player;
+        // playTurn(newBoard);
+
+        return optimalMove;
     } else {
         console.log('Game has Finished.');
     }
 }
 
-function MCSTOptimalNode(node) {
+function MCSTOptimalNode(node, player) {
     let optimalChildren = [];
     let optimalChildrenValue;
-    let optimalFound = false;
 
     let children = node.getChildren();
     for (let i = 0; i < children.length; i++) {
         let child = children[i];
-        let childValue = MCSTFunction(child);
-        if (childValue === Number.MAX_VALUE) {
-            if (optimalFound) {
-                optimalChildren.push(child);
-            } else {
-                optimalChildren = [child];
-            }
-            optimalFound = true;
-        }
-        if (optimalFound) continue;
+        let childValue = MCSTFunction(child, player);
 
-        let switchOptimal = (values.player === 1) ? (optimalChildrenValue === undefined || childValue > optimalChildrenValue) : (optimalChildrenValue === undefined || childValue < optimalChildrenValue)
+        let switchOptimal = (player === 1) ? (optimalChildrenValue === undefined || childValue > optimalChildrenValue) : (optimalChildrenValue === undefined || childValue < optimalChildrenValue)
 
         if (switchOptimal) {
             optimalChildren = [child];
@@ -61,10 +52,10 @@ function MCSTOptimalNode(node) {
     return optimalChildren[randomIndex];
 }
 
-function runMCST(node, player) {
+function runMCST(node, player, lastSection) {
     // Go Until Leaf Node
     while (node.hasChildren()) {
-        node = MCSTOptimalNode(node);
+        node = MCSTOptimalNode(node, player);
         player = 3 - player;
     }
 
@@ -75,12 +66,12 @@ function runMCST(node, player) {
     let result;
     let score = 0;
     if (node.getVisits() === 0) { // No
-        result = playUntilFinished(board, player, values.lastSection);
+        result = playUntilFinished(board, player, lastSection);
         backPropogateNode = node;
     } else { // Yes
-        let possibleMovesArr = getPossibleMoves(board, values.lastSection);
+        let possibleMovesArr = getPossibleMoves(board, lastSection);
         if (possibleMovesArr.length === 0) {
-            result = overallBoardIsFinished(board);
+            result = gameIsFinished(board);
             backPropogateNode = node;
         } else {
             let children = [];
@@ -98,7 +89,7 @@ function runMCST(node, player) {
             player = 3 - player;
             node.setChildren(children);
             let firstChild = children[0];
-            result = playUntilFinished(firstChild.getBoard(), player, values.lastSection);
+            result = playUntilFinished(firstChild.getBoard(), player, lastSection);
             backPropogateNode = firstChild;
         }
         
@@ -107,9 +98,11 @@ function runMCST(node, player) {
     backPropogateNode.backPropogateValues(score);
 }
 
-function MCSTFunction(node) {
+function MCSTFunction(node, player) {
     let visits = node.getVisits();
-    if (visits === 0) return Number.MAX_VALUE;
+    if (visits === 0) {
+        return (player === 1) ? Number.MAX_VALUE : Number.MIN_VALUE;
+    }
 
     let parent = node.getParent();
 

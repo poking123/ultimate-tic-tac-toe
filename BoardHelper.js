@@ -1,4 +1,4 @@
-const { sectionStartArray, sectionIsFinished, sectionOfIndex, nextMoveSection } = require('./Section');
+const { sectionStartArray, sectionIsFinished, returnOverallBoardSection, returnSmallBoardSection } = require('./Section');
 const { emptySpace, boardIsDrawnValue } = require('./Constants');
 
 function makeMove(move, board, player) {
@@ -106,21 +106,23 @@ function makeOverallBoard(board) {
     return overallBoard;
 }
 
-function getPossibleMoves(board, section) {
-    let sectionPossibleMovesArr = sectionPossibleMoves(board, section);
+function getPossibleMoves(board, lastSection) {
+    let sectionPossibleMovesArr = sectionPossibleMoves(board, lastSection);
     let overallBoard = makeOverallBoard(board);
 
-    if (sectionIsFinished(section, overallBoard) || sectionPossibleMovesArr.length === 0) {
+    if (sectionIsFinished(lastSection, overallBoard) || sectionPossibleMovesArr.length === 0) {
         // console.log('in allPossibleMoves');
         return allPossibleMoves(board, overallBoard);
     } else {
         // console.log('in sectionPossibleMoves');
-        return sectionPossibleMoves(board, section);
+        return sectionPossibleMoves(board, lastSection);
     }
 }
 
 function sectionPossibleMoves(board, section) {
     if (section < 0 || section > 8) return [];
+    // console.log('sectionPossibleMoves - section is ', section);
+    // console.log('sectionStartArray is ', sectionStartArray);
     let topLeft = sectionStartArray[section];
 
     let possibleMoves = [];
@@ -141,7 +143,7 @@ function sectionPossibleMoves(board, section) {
 function allPossibleMoves(board, overallBoard) {
     let allPossibleMoves = [];
     for (let index = 0 ; index < 81; index++) {
-        let section = sectionOfIndex(index);
+        let section = returnOverallBoardSection(index);
         let overallBoardRow = Math.floor(section / 3);
         let overallBoardCol = section % 3;
 
@@ -202,7 +204,7 @@ function smallBoardIsFinished(board) {
     return false;
 }
 
-function overallBoardIsFinished(board) {
+function gameIsFinished(board) {
     let overallBoard = makeOverallBoard(board);
     let overallBoardResult = smallBoardIsFinished(overallBoard);
     return overallBoardResult;
@@ -210,7 +212,7 @@ function overallBoardIsFinished(board) {
 
 function playUntilFinished(board, player, lastSection) {
     let newBoard = board.map(row => [...row]);
-    let result = overallBoardIsFinished(newBoard);
+    let result = gameIsFinished(newBoard);
     while (!result) {
         let possibleMovesArr = getPossibleMoves(newBoard, lastSection);
         let randomIndex = Math.floor(Math.random() * possibleMovesArr.length);
@@ -218,13 +220,13 @@ function playUntilFinished(board, player, lastSection) {
         // console.log('randomIndex is ', randomIndex);
         let move = possibleMovesArr[randomIndex];
         // console.log('move is ', move);
-        lastSection = nextMoveSection(move);
+        lastSection = returnSmallBoardSection(move);
         newBoard = makeMove(move, newBoard, player);
         player = 3 - player;
         // printBoard(newBoard);
         allBoards = makeAllBoards(newBoard);
         // console.log('allBoards is ', allBoards);
-        result = overallBoardIsFinished(newBoard);
+        result = gameIsFinished(newBoard);
     }
     return result;
 }
@@ -239,7 +241,7 @@ let toExport = {
     sectionPossibleMoves,
     allPossibleMoves,
     smallBoardIsFinished,
-    overallBoardIsFinished,
+    gameIsFinished,
     playUntilFinished,
 };
 

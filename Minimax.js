@@ -1,10 +1,25 @@
-function minimax(board, player, maxDepth, currDepth = 0, evaluateBoard, getPossibleMoves, gameIsFinished, makeMove) {
+const { makeOverallBoard, smallBoardIsFinished, getPossibleMoves, gameIsFinished, makeMove } = require('./BoardHelper');
+const { minimaxMaxDepth } = require('./Constants');
+
+function minimaxPlayer(board, player, lastSection) {
+    let minimaxResults = minimax(board, player, lastSection); // returns array [optimalMove, moveEvalution]
+    let optimalMoveIndex = 0;
+    console.log('minimax move made');
+    return minimaxResults[optimalMoveIndex];
+}
+
+function minimax(board, player, lastSection, maxDepth = minimaxMaxDepth, currDepth = 0) {
     // Player 1 = maximize
     // Player 2 = minimize
     if (currDepth === maxDepth) return [-1, evaluateBoard(board)]; // dummy value since we don't know the previous move
-    let possibleMoves = getPossibleMoves(board);
-    let gameIsFinished = gameIsFinished(board);
-    if (possibleMoves.length === 0 || gameIsFinished) return [-1, evaluateBoard(board)]; // dummy value since we don't know the previous move
+    console.log('currDepth is ', currDepth);
+    let possibleMoves = getPossibleMoves(board, lastSection);
+    console.log('lastSection is ', lastSection);
+    // console.log('possibleMoves length is ', possibleMoves.length);
+    // process.exit();
+    
+    let gameFinished = gameIsFinished(board);
+    if (possibleMoves.length === 0 || gameFinished) return [-1, evaluateBoard(board)]; // dummy value since we don't know the previous move
 
     let optimalMoves = [];
     let optimalMoveValue;
@@ -49,6 +64,19 @@ function minimax(board, player, maxDepth, currDepth = 0, evaluateBoard, getPossi
         let choice = Math.floor(Math.random() * optimalMoves.length);
         return [optimalMoves[choice], optimalMoveValue];
     }
+}
+
+function evaluateBoard(board) {
+    let overallBoard = makeOverallBoard(board);
+    let result = smallBoardIsFinished(overallBoard);
+
+    if (result === 1) {
+        return 1;
+    } else if (result === 2) {
+        return -1;
+    }
+
+    return 0;
 }
 
 

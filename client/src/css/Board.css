@@ -1,0 +1,19 @@
+#board {
+    background-image: url("../images/board.png");
+    background-repeat: no-repeat;
+    min-height: 546px;
+    width: 546px;
+    display: grid;
+    /* grid-template-columns: repeat(3, 171.75px);
+    grid-template-rows: repeat(3, 171.75px); */
+    grid-template-columns: repeat(3, 171.75px);
+    grid-template-rows: repeat(3, 171.75px);
+    grid-row-gap: 15px;
+    grid-column-gap: 15px;
+}
+
+.smallBoard {
+    display: grid;
+    grid-template-columns: 60.5px 51px 59.25px;
+    grid-template-rows: 60.5px 51px 59.25px;
+}

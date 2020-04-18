@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,15 @@
   "bugs": {
     "url": "https://github.com/poking123/ultimate-tic-tac-toe/issues"
   },
-  "homepage": "https://github.com/poking123/ultimate-tic-tac-toe#readme"
+  "homepage": "https://github.com/poking123/ultimate-tic-tac-toe#readme",
+  "dependencies": {
+    "concurrently": "^5.1.0",
+    "cors": "^2.8.5",
+    "create-react-app": "^3.4.1",
+    "express": "^4.17.1",
+    "helmet": "^3.22.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.3",
+    "readline-sync": "^1.4.10"
+  }
 }

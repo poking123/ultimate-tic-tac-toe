@@ -22,7 +22,7 @@ function sectionIsFinished(section, overallBoard) {
     return overallBoard[row][col] !== emptySpace;
 }
 
-function nextMoveSection(move) {
+function returnSmallBoardSection(move) {
     // if (move === -1) return -1;
 
     let topLeft = [0, 3, 6, 27, 30, 33, 54, 57, 60];
@@ -48,10 +48,10 @@ function nextMoveSection(move) {
     }
 
     // shouldn't get here
-    return -1;
+    return -10;
 }
 
-function sectionOfIndex(index) {
+function returnOverallBoardSection(index) {
     let topLeft = [0, 3, 6, 27, 30, 33, 54, 57, 60];
 
     for (let section = 0; section < topLeft.length; section++) {
@@ -65,7 +65,7 @@ function sectionOfIndex(index) {
     }
 
     // shouldn't get here
-    return -1;
+    return -10;
 }
 
 let toExport = {
@@ -80,8 +80,8 @@ let toExport = {
     sectionNineStart,
     sectionStartArray,
     sectionIsFinished,
-    nextMoveSection,
-    sectionOfIndex,
+    returnSmallBoardSection,
+    returnOverallBoardSection,
 };
 
 module.exports = toExport;

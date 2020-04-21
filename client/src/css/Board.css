@@ -14,6 +14,17 @@
 
 .smallBoard {
     display: grid;
-    grid-template-columns: 60.5px 51px 59.25px;
-    grid-template-rows: 60.5px 51px 59.25px;
+    /* grid-template-columns: 60.5px 51px 59.25px;
+    grid-template-rows: 60.5px 51px 59.25px; */
+    /* grid-template-columns: 55px 55px 55px;
+    grid-template-rows: 55px 55px 55px; */
+    grid-template-columns: 52px 50px 52px;
+    grid-template-rows: 52px 50px 52px;
+    margin: 9.5px 11.5px;
+    align-items: center;
+    justify-items: center;
+}
+
+.emptyBoardPiece {
+    visibility: hidden;
 }

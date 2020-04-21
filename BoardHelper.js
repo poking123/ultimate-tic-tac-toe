@@ -121,6 +121,10 @@ function getPossibleMoves(board, lastSection) {
 
 function sectionPossibleMoves(board, section) {
     if (section < 0 || section > 8) return [];
+    let overallBoard = makeOverallBoard(board);
+    let row = Math.floor(section / 3);
+    let col = section % 3;
+    if (overallBoard[row][col] !== 0) return []; 
     // console.log('sectionPossibleMoves - section is ', section);
     // console.log('sectionStartArray is ', sectionStartArray);
     let topLeft = sectionStartArray[section];

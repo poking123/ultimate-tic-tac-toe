@@ -7,10 +7,8 @@ import { uuid } from 'uuidv4';
 class Board extends Component {
 
     render() {
-        let currBoard = [];
         let { board } = this.props.boardData;
-        let pieceWidth = this.props.dimensionData.boardWidth / 3;
-        let pieceHeight = this.props.dimensionData.boardHeight / 3;
+        let { pieceLength } = this.props.dimensionData;
         let topLeft = []; // 0, 3, 6 => 0
         let topMiddle = []; // 1, 4, 7 => 1
         let topRight = []; // 2, 5, 8 => 2
@@ -26,20 +24,21 @@ class Board extends Component {
 
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
+                let topLeftIndex = 9 * i + j;
                 for (let k = 0; k < 3; k++) {
-                    let boardIndex = 9 * i + j + 3 * k;
-                    let entireBoardIndex = Math.floor(boardIndex / 9) + boardIndex % 3;
+                    let boardIndex = topLeftIndex + 3 * k;
+                    let entireBoardIndex = Math.floor(topLeftIndex / 3) + boardIndex % 3;
                     for (let col = 0; col < 3; col++) {
                         
                         switch(board[boardIndex][col]) {
                             case 0:
-                                entireBoard[entireBoardIndex].push(<div className="emptyBoardPiece" width={pieceWidth} height={pieceHeight} key={uuid()}></div>);
+                                entireBoard[entireBoardIndex].push(<div className="emptyBoardPiece" width={pieceLength} height={pieceLength} key={uuid()}></div>);
                                 break;
                             case 1:
-                                entireBoard[entireBoardIndex].push(<img src={x} onClick={e => e.stopPropagation()} width={pieceWidth} height={pieceHeight} key={uuid()} alt="X Piece" />);
+                                entireBoard[entireBoardIndex].push(<img src={x} onClick={e => e.stopPropagation()} width={pieceLength} height={pieceLength} key={uuid()} alt="X Piece" />);
                                 break;
                             case 2:
-                                entireBoard[entireBoardIndex].push(<img src={o} onClick={e => e.stopPropagation()} width={pieceWidth} height={pieceHeight} key={uuid()} alt="O Piece" />);
+                                entireBoard[entireBoardIndex].push(<img src={o} onClick={e => e.stopPropagation()} width={pieceLength} height={pieceLength} key={uuid()} alt="O Piece" />);
                                 break;
                             default:
                                 break;
@@ -48,7 +47,6 @@ class Board extends Component {
                 }
             }
         }
-        console.log('entireBoard is, ', entireBoard)
         let innerBoards = [];
         for (let i = 0; i < entireBoard.length; i++) {
             innerBoards.push(<div className="smallBoard" key={uuid()} >{ entireBoard[i] }</div>);

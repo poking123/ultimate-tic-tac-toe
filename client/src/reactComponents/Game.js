@@ -28,6 +28,8 @@ class Game extends Component {
         };
     }
 
+    serverURI = process.env.REACT_APP_SERVER_URI;
+
     gameConstants = Object.freeze({
         smallBoardWidth: 171.75,
         smallBoardHeight: 171.75,
@@ -116,8 +118,6 @@ class Game extends Component {
         let smallBoardsArr = entireBoard.children;
 
         let entireBoardIndex = this.findIndex(smallBoardsArr, smallBoard);
-        console.log('entireBoardIndex', entireBoardIndex)
-
 
         let smallBoardRow = Math.floor(offsetY / (oneBoardLength / 3));
         let smallBoardCol = Math.floor(offsetX / (oneBoardLength / 3));
@@ -125,7 +125,7 @@ class Game extends Component {
         let topLeftMoveIndices = [0, 3, 6, 27, 30, 33, 54, 57, 60];
         let move = topLeftMoveIndices[entireBoardIndex] + 9 * smallBoardRow + smallBoardCol;
         console.log('move is', move)
-        axios.post('http://localhost:5000/api/makeHumanMove', {
+        axios.post(this.serverURI + 'api/makeHumanMove', {
             board: this.state.board,
             player: this.state.player,
             move,
@@ -154,7 +154,7 @@ class Game extends Component {
             computerMoveQueue.shift();
             this.setState({ computerMoveQueue });
         }
-        axios.post('http://localhost:5000/api/makeComputerMove', {
+        axios.post(this.serverURI + 'api/makeComputerMove', {
             board: this.state.board,
             player: this.state.player,
             lastSection: this.state.lastSection,

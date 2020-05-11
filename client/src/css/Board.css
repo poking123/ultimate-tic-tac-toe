@@ -1,8 +1,8 @@
 #board {
     background-image: url("../images/board.png");
     background-repeat: no-repeat;
-    min-height: 546px;
-    width: 546px;
+    /* min-height: 546px; */
+    /* width: 546px; */
     display: grid;
     /* grid-template-columns: repeat(3, 171.75px);
     grid-template-rows: repeat(3, 171.75px); */
@@ -10,6 +10,10 @@
     grid-template-rows: repeat(3, 171.75px);
     grid-row-gap: 15px;
     grid-column-gap: 15px;
+
+    width: auto;
+    max-width: 100%;
+    height: auto;
 }
 
 .smallBoard {

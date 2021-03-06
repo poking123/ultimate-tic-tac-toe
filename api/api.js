@@ -5,13 +5,16 @@ const router = express.Router();
 // Game
 let { makeActualMove } = require('../PlayGame');
 const { getPossibleMoves, makeOverallBoard, gameIsFinished } = require('../BoardHelper');
-const { playMCST } = require('../MCST');
+const { playMCST } = require('../players/MCST');
 const { returnSmallBoardSection } = require('../Section');
 
 // api
 router.post('/makeComputerMove', function(req, res) {
     let {board, player, lastSection} = req.body;
-    let move = playMCST(board, player, lastSection);
+    let iterations = 5000;
+    let exploreCoefficient = 0.4;
+    let MCST = playMCST(iterations, exploreCoefficient); // MCST Is A Function
+    let move = MCST(board, player, lastSection);
     board = makeActualMove(move, board, player);
     player = 3 - player;
     

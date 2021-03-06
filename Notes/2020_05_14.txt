@@ -1,0 +1,3 @@
+I noticed that we're not switching the players, so player1 is always player 1 and player2 is always player 2. This is then not accounting for the advantage of going first.
+
+I've also added a coefficient parameter to let the user change the explore coefficient in MCTS. It seems to make a stronger player when we decrease the coefficient of the exploreValue

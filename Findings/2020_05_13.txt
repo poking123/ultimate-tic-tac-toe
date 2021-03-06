@@ -1,0 +1,8 @@
+We found before that the algorithm was no good when we looked at one branch (the first one) and only looked in that branch, not looking at other branches (of course).
+
+What I found interesting today was that increasing the amount of iterations of MCST actually made the algorithm worse. I think the reason is that having more iterations decreases the value of the function. 
+In this case, we have to decrease the value of each exploreValue iteration (change the coefficient). Is there a way to tune the parameter to maximize it? Then we also have to optimize the number of iterations.
+
+2000 > 20000
+500 > 2000
+500 > 250

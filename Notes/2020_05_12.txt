@@ -1,0 +1,11 @@
+How about we run an iteration like 10 times on a new branch instead of just once?
+
+
+It looks to me that the algorithm isn't searching enough branches The more we search in one branch, the more we continue to search down that branch.
+1987/2000 iterations gone done only 1 child branch from the root node.
+
+
+Why does which player matter? We're always trying to go down the optimal path.
+
+
+Here's an idea, tune the parameters to make the algorithm it's strongest

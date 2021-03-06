@@ -2,9 +2,10 @@ const { sectionStartArray, sectionIsFinished, returnOverallBoardSection, returnS
 const { emptySpace, boardIsDrawnValue } = require('./Constants');
 
 function makeMove(move, board, player) {
+    let newBoard = board.map(arr => [...arr]);
+    
     let row = Math.floor(move / 3);
     let col = move % 3;
-    let newBoard = board.map(arr => [...arr]);
     newBoard[row][col] = player;
     return newBoard;
 }

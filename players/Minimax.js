@@ -1,5 +1,5 @@
-const { makeOverallBoard, smallBoardIsFinished, getPossibleMoves, gameIsFinished, makeMove } = require('./BoardHelper');
-const { minimaxMaxDepth } = require('./Constants');
+const { makeOverallBoard, smallBoardIsFinished, getPossibleMoves, gameIsFinished, makeMove } = require('../BoardHelper');
+const { minimaxMaxDepth } = require('../Constants');
 
 function minimaxPlayer(board, player, lastSection) {
     let minimaxResults = minimax(board, player, lastSection); // returns array [optimalMove, moveEvalution]
